@@ -1,0 +1,23 @@
+Scenario 1:
+You are working on a robotic arm that is designed to pick up and place objects with precision. The arm is controlled by a PID controller, which adjusts the position of the arm based on the desired position (setpoint) and the actual position (measured by sensors).
+
+Recently, you’ve noticed that when the arm moves to pick up an object, it often overshoots the target position, oscillating back and forth before finally settling in place. This not only wastes time but also risks damaging the objects being handled.
+
+Questions:
+
+1. Which component(s) of the PID controller could be causing this issue, and how might they be contributing to the problem?
+
+2. Propose specific adjustments or tuning strategies for the PID parameters (Kp, Ki, Kd) to reduce the overshoot and oscillation. Explain why these changes would improve the performance of the robotic arm.
+
+3. Consider any potential downsides to your proposed changes. How might you address these to ensure the system remains stable and responsive?
+
+Scenario 2:
+You are working on the development of an autonomous drone designed for aerial photography. The drone uses a PID controller to maintain a steady altitude while flying. The desired altitude is set by the user, but during recent test flights, you’ve observed that the drone struggles to maintain a consistent altitude. It tends to drift upward slowly and then abruptly corrects by dropping too quickly, which results in a noticeable “bobbing” motion as the drone tries to stabilize.
+
+Questions:
+
+1. Which component(s) of the PID controller are likely responsible for the slow upward drift and the abrupt downward correction? Discuss how these components are influencing the drone’s behavior.
+
+2. Propose specific adjustments or tuning strategies for the PID parameters (Kp, Ki, Kd) to achieve smoother altitude control and eliminate the “bobbing” motion. Explain how these changes would improve the drone’s stability.
+
+
