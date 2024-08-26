@@ -6,7 +6,7 @@ This is the underlying equation behind PID, and over the course of this week we 
 
 $u(t) = K_p\cdot e(t) + K_i\cdot\int^t_0{e(\tau)d\tau}~+ K_d\cdot \frac{d}{dt}\left[e\left(t\right)\right]$
 
-*where e(t) is the error at time t, and u(t) is the output of the PID controller. In our case, when working with motors, <ins>u(t) will always be the power we give them</ins>*.
+*where e(t) is the error at time t, and u(t) is the output of the PID controller. In our case, when working with motors, u(t) will always be the power we give them*.
 
 Effectively, we have a controller for a single action, so that aspect is tuned to use. We have individually tuned PIDs for the position and velocity of each motor, because each motor is in a unique position on the robot, with different load, friction, and other random qualities.
 

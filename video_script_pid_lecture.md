@@ -34,7 +34,7 @@ Remember that PID is an algorithm that helps us control the variable we care abo
 
 ![](assets/video_panels/card1.png)
 
-The first way we can make a system do what we want is with the proportional component. The proportional component will set an output directly proportional to the error, as such $O_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system.
+The first way we can make a system do what we want is with the proportional component. The proportional component will set an output directly proportional to the error, as such $u_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system.
 
 Let's take an example of a motor, with which we are trying to control its position. Let's say we have a motor at position -5, and we want to be at 150, with this, our error e(t) is desired - actual, which is 150 - (-5), giving us an error of 155. If we have a $k_p$ value of 2, then the value that is sent the motor is 310.
 
@@ -56,7 +56,7 @@ Now, what if we apply 310 power to the motor, and it reached 150. According to t
 
 ![](assets/video_panels/card2.png)
 
-This phenomenon is known as overshoot, and it happens with virtually any amount of unchecked inertia in your system. There is a way to combat this, and this comes in the form of the D component, or the derivative component. The derivative component will set an output directly proportional to the error, as such $O_d(t) = k_d * \frac{de(t)}{dt}$. On its own, all it does is resist change of the actual, but with P and D, you can create systems that move the actual toward the desired and smooth out oscillations. If we go back to our scenario from earlier, lets say that we now have a $k_d$ of 2. Now, we should also quantify the derivative of the error. Lets say that the difference between the desired and actual is decreasing at a rate of -60. That is our de/dt, and therefore our d component becomes -120. This plus the 310 will reduce to 190 and this will slow the motor, and will continue to keep it at a slower rate as it reaches the desired position.
+This phenomenon is known as overshoot, and it happens with virtually any amount of unchecked inertia in your system. There is a way to combat this, and this comes in the form of the D component, or the derivative component. The derivative component will set an output directly proportional to the error, as such $u_d(t) = k_d * \frac{de(t)}{dt}$. On its own, all it does is resist change of the actual, but with P and D, you can create systems that move the actual toward the desired and smooth out oscillations. If we go back to our scenario from earlier, lets say that we now have a $k_d$ of 2. Now, we should also quantify the derivative of the error. Lets say that the difference between the desired and actual is decreasing at a rate of -60. That is our de/dt, and therefore our d component becomes -120. This plus the 310 will reduce to 190 and this will slow the motor, and will continue to keep it at a slower rate as it reaches the desired position.
 
 > SHOW IMAGE2_2,0,2 ↓
 
@@ -74,7 +74,7 @@ Now we've looked at when you want to use P and when you want to use D, but we've
 
 Let's consider a second scenario where there is a high amount of friction on the device. With both P and D, the motor is able to get close to the desired position, but the friction is too much to overcome, and increasing the P too much will simply make it overshoot. In this case, we want to use a little bit of I.
 
-I follows the following equation: $O_i(t) = k_i * \int{e(t)dt}$. It grows with the integral of the error OVER TIME, what we're looking at is the area under the curve, so it grows exponentially and often very uncontrollably. Often in this case, we want to add a cap to how large the I component can build to. Now, lets see it in use.
+I follows the following equation: $u_i(t) = k_i * \int{e(t)dt}$. It grows with the integral of the error OVER TIME, what we're looking at is the area under the curve, so it grows exponentially and often very uncontrollably. Often in this case, we want to add a cap to how large the I component can build to. Now, lets see it in use.
 
 > IMAGE4 ↓
 
@@ -88,7 +88,7 @@ Consider now this graph that is the same physical characteristics, now with a 2 
 
 Now we're running a 3 0.1 2.5 PID, on the same setup, and look how we're able to maintain a smooth transition into the end, and it reaches the setpoint. Unfortunately its not perfect, but increasing the I any more will seriously unstabilize the system. In these types of cases, it may be best to look at why there is so much friction in the system and see if that can be dealt with.
 
-Another way to deal with this could be to have a feed forward that applies a flat constant in whatever direction of movement to counteract specifically friction. This is not something you'll have to do for 
+Another way to deal with this could be to have a feed forward that applies a flat constant in whatever direction of movement to counteract specifically friction. This is not something you'll have to do for
 
 One final scenario where we want to use I is when we want a lot of power at the start, and then a small amount of power to maintain velocity, like a flywheel. Systems like a single motor and a flywheel have a moment of inertia that maintains velocity, and therefore will only need a small amount of power to counteract the energy leaving the system.
 
@@ -99,12 +99,12 @@ One final scenario where we want to use I is when we want a lot of power at the 
 Combining all three components, the PID equation is this:
 
 $$
-O(t) = k_pe(t) + k_i \int{e(t)dt} + k_d\frac{de(t)}{dt}
+u(t) = k_pe(t) + k_i \int{e(t)dt} + k_d\frac{de(t)}{dt}
 $$
 
-And this is the base PID equation, taking into account only feedback that we get from the motor. PID at its heart is purely reactive, which means it can be adapted to any system, but it means that it is always lagging just a little bit behind. However, what if we know a characteristic about the system and we can use that to predict what we *should* give the motor. 
+And this is the base PID equation, taking into account only feedback that we get from the motor. PID at its heart is purely reactive, which means it can be adapted to any system, but it means that it is always lagging just a little bit behind. However, what if we know a characteristic about the system and we can use that to predict what we *should* give the motor.
 
-> IMAGE WITH PITCH MOTOR AND FORCE DIAGRAM
+> IMAGE WITH PITCH MOTOR AND FORCE DIAGRAM ↓
 
 ![](assets/video_panels/turretCard.png)
 
@@ -112,9 +112,15 @@ Let's take into account a theoretical scenario as such. We have a horizontal mot
 
 Now, since the motor is a rotational pivot, we actually only care about the force thats tangent to the motor. Looking at this force diagram, we can say that the amount of force pushing the motor clockwise is $F_T$ or $F_g * cos(\theta)$.
 
-The force is dependent on the angle of the motor, and wait, hold up. We have that. We know the angle of the motor, its the actual. All we need is to find how much "force" of the motor is equivalent to how much actuation of the motor. 
+The force is dependent on the angle of the motor, and wait, hold up. We have that. We know the angle of the motor, its the actual. All we need is to find how much "force" of the motor is equivalent to how much actuation of the motor.
 
 To find this, we can set the motor to different values, and see how much it takes to keep it level at fully horizontal. Let say we do some testing, and we apply 40 to the motor and thats how much it takes to stay fully horizontal. We can simply set our feed forward to $40*cos(\theta)$, and with the knowledge that we currently have of the system, we don't have to do any unstable I to counteract gravity, we can use very stable known forces of the system, and then have the rest of the PID act as normal, which will be some P and some D. This is a method we have successfully used in the past to control a motor we have that is exactly like this one.
+
+> CASCADING PID CONCEPT DIAGRAM ↓
+
+There is one final thing to discuss with PID, and that's using multiple PIDs for a single system. Often, we find difficulty in controlling a positional system when our method of actuation is acceleration. This is the case because acceleration is the double derivative of position, and with a lot of uneven forces in the mix, its often very difficult to run control on these. Controlling velocity with acceleration is much MUCH easier, and so is controlling 
+
+# Writer's Notes:
 
 TOPICS TO DISCUSS:
 
@@ -123,7 +129,7 @@ TOPICS TO DISCUSS:
 - desired: where you want something to be (fixed color graph) (d(t))
 - actual: where it is (another fixed color graph) a(t)
 - error: `desired - actual` e(t)
-- output: the value you give the motor? to make it do (the actuation), result of the current PID calculation O(t)
+- output: the value you give the motor? to make it do (the actuation), result of the current PID calculation u(t)
 - time stamp: the time value used to distinguish between each cycle of code executed
 - P component $ k_p $
 - - proportional
