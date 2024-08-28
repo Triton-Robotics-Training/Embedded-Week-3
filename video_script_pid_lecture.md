@@ -30,6 +30,8 @@ The output is how we actuate the system. This is generally our only method of ac
 
 Remember that PID is an algorithm that helps us control the variable we care about with separate actuation, and is used in cases where the only way we can actuate the system doesn't give us way to control the system well.
 
+In this lecture, I'll be using a lot of examples and showing a lot of models, all of these can be found here at [https://pknessness.github.io/pid_sim/pid.html](https://pknessness.github.io/pid_sim/pid.html)
+
 > INCLUDE P EQUATION PLUS A DIAGRAM? A VISUAL? OF SOME SORT IDK ↓
 
 ![](assets/video_panels/card1.png)
@@ -50,7 +52,7 @@ One thing to note is that, it takes time for machines to interpret and execute t
 
 ![](assets/video_panels/pid1.png)
 
-Now, what if we apply 310 power to the motor, and it reached 150. According to the equation, our desired is 150, our actual is 150, and therefore our error is 0 and our output is 0. Fantastic. HOWEVER, what if the system attached to the motor has inertia, and that inertia carries the motor past 150 and all the way to 277, before the force of the motor becomes enough to pull the system to a halt and make it begin moving in the other direction. Now its moving higher, until again it reaches 0 and the output is again 0 and then it goes past AGAIN to 55, and back, and forth, until it slowly stabilizes at 150. Here, you can see EXACTLY that happening.
+Now, what if we apply 310 power to the motor, and it reached 150. According to the equation, our desired is 150, our actual is 150, and therefore our error is 0 and our output is 0. Fantastic. HOWEVER, what if the system attached to the motor has inertia, and that inertia carries the motor past 150 and all the way to 277, before the force of the motor becomes enough to pull the system to a halt and make it begin moving in the other direction. Now its moving higher, until again it reaches 0 and the output is again 0 and then it goes past AGAIN to 55, and back, and forth, until it slowly stabilizes at 150. Here, you can see EXACTLY that happening. This exact model you can see in the pid_lecture_1_basic example in the sim, which you can change using the "Process example" slider.
 
 > SHOW EQUATION ↓
 
@@ -76,21 +78,23 @@ Let's consider a second scenario where there is a high amount of friction on the
 
 I follows the following equation: $u_i(t) = k_i * \int{e(t)dt}$. It grows with the integral of the error OVER TIME, what we're looking at is the area under the curve, so it grows exponentially and often very uncontrollably. Often in this case, we want to add a cap to how large the I component can build to. Now, lets see it in use.
 
+This example is the pid_lecture_2_friction example, which can be accessed in the same way as the first.
+
 > IMAGE4 ↓
 
 ![](assets/video_panels/pid4.png)
 
-Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. We need to seriously reduce the I, and increasing the P and D a bit wouldn't hurt either.
+Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. We need to seriously limit the I, and we can do that using the fourth parameter, the I cap. The I cap is the maximum of the I component of the entire equation, basically limiting how much the I component can build to, and overall how much of an impact it can have on the final output. When using I cap, $k_i$ becomes a parameter of "how fast does the I build", basically becoming a persistent parameter that will decrease continuously (until it reached the I cap) when actual is above desired, and increase continuously (until it reached the I cap) when actual is below desired.
 
 > IMAGE5 ↓
 
 ![](assets/video_panels/pid5.png)
 
-Now we're running a 3 0.1 2.5 PID, on the same setup, and look how we're able to maintain a smooth transition into the end, and it reaches the setpoint. Unfortunately its not perfect, but increasing the I any more will seriously unstabilize the system. In these types of cases, it may be best to look at why there is so much friction in the system and see if that can be dealt with.
+Now we're running a 2 1 2 PID, and with an I cap of 15, on the same setup, and look how we're able to maintain a smooth transition into the end, and it reaches the setpoint.
 
-Another way to deal with this could be to have a feed forward that applies a flat constant in whatever direction of movement to counteract specifically friction. This is not something you'll have to do for
+Another way to deal with this could be to have a feed forward that applies a flat constant in whatever direction of movement to counteract specifically friction. We'll talk more about feed forwards and how we can use knowledge of the system to assist our PID later.
 
-One final scenario where we want to use I is when we want a lot of power at the start, and then a small amount of power to maintain velocity, like a flywheel. Systems like a single motor and a flywheel have a moment of inertia that maintains velocity, and therefore will only need a small amount of power to counteract the energy leaving the system.
+One final scenario where we want to use I is when we want a lot of power at the start, and then a small amount of power to maintain velocity, like a flywheel. Systems like a single motor and a flywheel have a moment of inertia that maintains velocity, and therefore will only need a small amount of power to counteract the energy leaving the system. You're still going to want to regulate the I cap so that the I component is sufficiently regulated.
 
 > FULL EQUATION ↓
 
@@ -108,17 +112,23 @@ And this is the base PID equation, taking into account only feedback that we get
 
 ![](assets/video_panels/turretCard.png)
 
-Let's take into account a theoretical scenario as such. We have a horizontal motor with a rod, and that rod has a non-negligible weight. A force of gravity is pulling down on the rod, and you can see that here.
+Let's consider a theoretical scenario as such. We have a horizontal motor with a rod, and that rod has a non-negligible weight. A force of gravity is pulling down on the rod, and you can see that here as $F_g$.
 
 Now, since the motor is a rotational pivot, we actually only care about the force thats tangent to the motor. Looking at this force diagram, we can say that the amount of force pushing the motor clockwise is $F_T$ or $F_g * cos(\theta)$.
 
-The force is dependent on the angle of the motor, and wait, hold up. We have that. We know the angle of the motor, its the actual. All we need is to find how much "force" of the motor is equivalent to how much actuation of the motor.
+The force is dependent on the angle of the motor, and wait, hold up. We have that. We know the angle of the motor, its data that we can access and we are currently using as the actual. All we need is to find how much "value" of the motor is equivalent to how much actuation of the motor.
 
-To find this, we can set the motor to different values, and see how much it takes to keep it level at fully horizontal. Let say we do some testing, and we apply 40 to the motor and thats how much it takes to stay fully horizontal. We can simply set our feed forward to $40*cos(\theta)$, and with the knowledge that we currently have of the system, we don't have to do any unstable I to counteract gravity, we can use very stable known forces of the system, and then have the rest of the PID act as normal, which will be some P and some D. This is a method we have successfully used in the past to control a motor we have that is exactly like this one.
+To find this, we can set the motor to different values, and see how much it takes to keep it level at fully horizontal. Let say we do some testing, and we apply 40 to the motor and thats how much it takes to stay fully horizontal. We can simply set our feed forward to $40*cos(\theta)$, and with the knowledge that we currently have of the system, we don't have to do any unstable I to counteract gravity, we can use very stable known forces of the system, and then have the rest of the PID act as normal, which will be some P and some D. 
+
+This example is the pid_example_3_imbalanced in the sim, and I highly recommend taking a look at it, and attempting to tune it after removing the feed forward equation.
 
 > CASCADING PID CONCEPT DIAGRAM ↓
 
-There is one final thing to discuss with PID, and that's using multiple PIDs for a single system. Often, we find difficulty in controlling a positional system when our method of actuation is acceleration. This is the case because acceleration is the double derivative of position, and with a lot of uneven forces in the mix, its often very difficult to run control on these. Controlling velocity with acceleration is much MUCH easier, and so is controlling 
+There is one final thing to discuss with PID, and that's using multiple PIDs for a single system. Often, we find difficulty in controlling a positional system when our method of actuation is acceleration. This is the case because acceleration is the double derivative of position, and with a lot of uneven forces in the mix, its often very difficult to run control on these. Controlling velocity with acceleration is much MUCH easier, and so is controlling position with velocity. Inertia is better handled by a accel-controls-velocity PID than with a accel-controls-position PID, and a main reason for this is that inertia stabilizes velocity, and that unfortunately happens to make it more difficult to control position.
+
+That's something we'll talk about briefly in use, and that we plan to slowly incorporate more into the robot.
+
+That's the end of this lecture. If you have any questions please ask your lead, they should be able to clear anything up. This also helps us improve our training program, as we may want to add the answers to your questions in this video in a later iteration. 
 
 # Writer's Notes:
 
