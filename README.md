@@ -79,8 +79,9 @@ Tuning the PID coefficients can be a trial-and-error process. Finding the right 
 
 In real-world implementaions, there might be different limiations such as non-linearity in the system which means the values that worked once might not work again. So constantly tuning it can give optimal performance. This is especially important when dealing with the different robots. 
 
+### Assignment 
 
-
+For the assignment this week we will be using a customize PID Simulator ([Sim](https://pknessness.github.io/pid_sim/pid.html)). There will a list of objectives in the week 3 assignment 2 text file. For which you have to tune to the instructions and input the answer within the file. 
 
 
 
