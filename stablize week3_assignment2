@@ -1,0 +1,38 @@
+Week 3 Assignemnt 2
+
+Assignment Instructions:
+
+Stablize System:
+
+Objectives
+  - Stabilize the system in 10 seconds with less than 3 overshoots. 
+  - Record your PID settings
+
+Stablize the Flywheel:
+
+Objectives
+  - Stabilize the Flyweels in 8 seconds with less than 2 overshoots. 
+  - Record your PID settings
+
+
+Submission Instructions:
+
+--------- System -------------
+Final PID parameter
+  - P: ?
+  - I: ?
+  - D: ?
+
+Stablaization times achieved: ?
+
+Maximum overshot recorded: ?
+
+--------- Flywheel -------------
+Final PID parameter
+  - P: ?
+  - I: ?
+  - D: ?
+
+Stablaization times achieved: ?
+
+Maximum overshot recorded: ?
