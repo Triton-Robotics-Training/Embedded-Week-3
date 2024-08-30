@@ -26,17 +26,24 @@ The actual state is where the system is, this is gotten through a sensor of some
 
 The error of the system is the desired minus actual. This is how far the actual state of the system is deviated from the desired.
 
-The output is how we actuate the system. This is generally our only method of actuating the system, and is often not relatable to the inputs we get from the system, an example being that we want to control position of a motor but all we can actually set is its acceleration.
+The output is how we actuate on, or change the system. This is generally our only method of impacting the system, and is often not relatable to the inputs we get from the system, an example being that we want to control position of a motor but all we can actually set is its acceleration.
 
 Remember that PID is an algorithm that helps us control the variable we care about with separate actuation, and is used in cases where the only way we can actuate the system doesn't give us way to control the system well.
 
 In this lecture, I'll be using a lot of examples and showing a lot of models, all of these can be found here at [https://pknessness.github.io/pid_sim/pid.html](https://pknessness.github.io/pid_sim/pid.html)
 
+> BANG BANG ↓
+> ![](assets/video_panels/bangbang.png)
+
+Before we even go into PID, Lets consider first a simple scenario, we have a motor, a desired, and we know the actual. If we are above the actual, we give the motor full power downwards, and if we are below the actual, we give the motor full power upwards. This is what you'll get from that sort of control most if not all of the time, where delays in reaction and inertia in the system cause the jagged motion of the actual around the desired.
+
+This is a rudimentary form of control, and is mainly used when you have no fine control over actuation, and instead have a binary ON or OFF for your motor or other device.
+
 > INCLUDE P EQUATION PLUS A DIAGRAM? A VISUAL? OF SOME SORT IDK ↓
 
 ![](assets/video_panels/card1.png)
 
-The first way we can make a system do what we want is with the proportional component. The proportional component will set an output directly proportional to the error, as such $u_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system.
+If we have variable control over our actuation, a better way we can make a system do what we want is with a proportional component. A proportional component will set an output directly proportional to the error, as such $u_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system.
 
 Let's take an example of a motor, with which we are trying to control its position. Let's say we have a motor at position -5, and we want to be at 150, with this, our error e(t) is desired - actual, which is 150 - (-5), giving us an error of 155. If we have a $k_p$ value of 2, then the value that is sent the motor is 310.
 
@@ -84,7 +91,9 @@ This example is the pid_lecture_2_friction example, which can be accessed in the
 
 ![](assets/video_panels/pid4.png)
 
-Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. We need to seriously limit the I, and we can do that using the fourth parameter, the I cap. The I cap is the maximum of the I component of the entire equation, basically limiting how much the I component can build to, and overall how much of an impact it can have on the final output. When using I cap, $k_i$ becomes a parameter of "how fast does the I build", basically becoming a persistent parameter that will decrease continuously (until it reached the I cap) when actual is above desired, and increase continuously (until it reached the I cap) when actual is below desired.
+Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. This is because when the setpoint changed, the error began to accumulate as integral. The area under the curve before the actual and desired met is accumulated without limit as integral and then begins to impact the system beyond crossing the setpoint because the integral has "wound up" and needs to unwind before the integral component is 0. Sometimes you want this to be the case, but here it winds up too much. One way we can reduce this is by reducing the $k_i$ coefficient, but this will lead to an even more delayed reaction because the integral will simply wind up less quickly. 
+
+What we need is to limit the I component's winding up, and we can do that using the fourth parameter, the I cap. The I cap is the maximum of the I component of the entire equation, basically limiting how much the I component can build to, and overall how much of an impact it can have on the final output. In mathmatical terms, it is $u_i(t) = min(Icap,k_i * \int{e(t)dt})$.When using I cap, $k_i$ becomes a parameter of "how fast does the I build", basically becoming a persistent parameter that will decrease continuously (until it reached the I cap) when actual is above desired, and increase continuously (until it reached the I cap) when actual is below desired.
 
 > IMAGE5 ↓
 
@@ -118,7 +127,7 @@ Now, since the motor is a rotational pivot, we actually only care about the forc
 
 The force is dependent on the angle of the motor, and wait, hold up. We have that. We know the angle of the motor, its data that we can access and we are currently using as the actual. All we need is to find how much "value" of the motor is equivalent to how much actuation of the motor.
 
-To find this, we can set the motor to different values, and see how much it takes to keep it level at fully horizontal. Let say we do some testing, and we apply 40 to the motor and thats how much it takes to stay fully horizontal. We can simply set our feed forward to $40*cos(\theta)$, and with the knowledge that we currently have of the system, we don't have to do any unstable I to counteract gravity, we can use very stable known forces of the system, and then have the rest of the PID act as normal, which will be some P and some D. 
+To find this, we can set the motor to different values, and see how much it takes to keep it level at fully horizontal. Let say we do some testing, and we apply 40 to the motor and thats how much it takes to stay fully horizontal. We can simply set our feed forward to $40*cos(\theta)$, and with the knowledge that we currently have of the system, we don't have to do any unstable I to counteract gravity, we can use very stable known forces of the system, and then have the rest of the PID act as normal, which will be some P and some D.
 
 This example is the pid_example_3_imbalanced in the sim, and I highly recommend taking a look at it, and attempting to tune it after removing the feed forward equation.
 
@@ -128,7 +137,7 @@ There is one final thing to discuss with PID, and that's using multiple PIDs for
 
 That's something we'll talk about briefly in use, and that we plan to slowly incorporate more into the robot.
 
-That's the end of this lecture. If you have any questions please ask your lead, they should be able to clear anything up. This also helps us improve our training program, as we may want to add the answers to your questions in this video in a later iteration. 
+That's the end of this lecture. If you have any questions please ask your lead, they should be able to clear anything up. This also helps us improve our training program, as we may want to add the answers to your questions in this video in a later iteration.
 
 # Writer's Notes:
 
