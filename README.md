@@ -1,4 +1,4 @@
-# PID - Week 3 
+# PID - Week 3
 
 PID is the controller we use for a lot of the systems on our robot. The main concept for a [PID controller](https://en.wikipedia.org/wiki/Proportional–integral–derivative_controller) is to take a desired value and an actual value, and minimize the difference between the two, which is referred to as "error". When the error is near zero then you have succesfully reached the setpoint. PID does this with three components, the Proportional component, the Integral component, and the Derivative component.
 
@@ -9,8 +9,6 @@ $u(t) = K_p\cdot e(t) + K_i\cdot\int^t_0{e(\tau)d\tau}~+ K_d\cdot \frac{d}{dt}\l
 *where e(t) is the error at time t, and u(t) is the output of the PID controller. In our case, when working with motors, u(t) will always be the power we give them*.
 
 Effectively, we have a controller for a single action, so that aspect is tuned to use. We have individually tuned PIDs for the position and velocity of each motor, because each motor is in a unique position on the robot, with different load, friction, and other random qualities.
-
-
 
 ### Proportional
 
@@ -51,7 +49,7 @@ The derivative has set our output to be 10.416. Derivative is meant to dampen a 
 
 # Exercise #1
 
-For this exercise, we'll be writing a PID class. There is some [starter code](https://github.com/Triton-Robotics-Training/Week-3/blob/main/pidalgorithm.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect. 
+For this exercise, we'll be writing a PID class. There is some [starter code](https://github.com/Triton-Robotics-Training/Week-3/blob/main/pidalgorithm.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
 
 ### Integral Calculation
 
@@ -77,20 +75,10 @@ Tuning the PID coefficients can be a trial-and-error process. Finding the right 
 
 ### Considerations
 
-In real-world implementaions, there might be different limiations such as non-linearity in the system which means the values that worked once might not work again. So constantly tuning it can give optimal performance. This is especially important when dealing with the different robots. 
+In real-world implementaions, there might be different limiations such as non-linearity in the system which means the values that worked once might not work again. So constantly tuning it can give optimal performance. This is especially important when dealing with the different robots.
 
-# Assignment 
+# Assignment
 
-For the assignment this week we will be using a customize PID Simulator ([Sim](https://pknessness.github.io/pid_sim/pid.html)). There will a list of objectives in the week 3 assignment 2 text file. For which you have to tune to the instructions and input the answer within the file. 
+For the assignment this week we will be using a customize PID Simulator ([Sim](https://pknessness.github.io/pid_sim/pid.html)). There will a list of objectives in the week 3 assignment 2 [text file](week3_assignment2.txt). For which you have to tune to the instructions and input the answer within the file.
 
-
-
-
-
-
-
-
-
-
-
-
+Clicking the "Test Sequence" button will begin a test set and you will be able to see how your PIDs fare to a predetermined set of moves. It will tell you the worst stabilization time and the worst overshoot amount. Keep in mind that if your tunings don't stabilize, it will say so and not continue recording the rest of the setpoints. If you have any questions about the simulator, please contact your lead.

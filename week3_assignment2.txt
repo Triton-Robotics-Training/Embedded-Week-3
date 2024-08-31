@@ -1,0 +1,75 @@
+----- Week 3 Assignemnt 2 -------
+
+Assignment Instructions:
+
+You can access the simulator by going to this link:
+pknessness.github.io/pid_sim/pid.html
+
+The simulator has a slider for "Example Presets" the first three are 
+part1, part2, and part3, of this assignment, the next 3 are examples 
+from the video lecture, which you can play around with and observe the 
+tunings of.
+
+You don't need to use all the parameters given to tune the targets, but 
+all are given incase you need them.
+
+Part 1: Position
+ 
+Objectives
+  - Stabilize the system in 5 seconds with overshoot of less than 5. 
+  - Record your PID settings
+
+Part 2: Flywheels
+
+Objectives
+  - Stabilize the Flyweels in 3 seconds with overshoot of less than 4. 
+  - Record your PID settings
+
+Submission Instructions:
+
+--------- Position -------------
+Final PID parameter
+  - P: ?
+  - I: ?
+  - D: ?
+  - Icap: ?
+  - FF: ?
+
+
+Stabilization times achieved: ?
+
+Maximum overshot recorded: ?
+
+--------- Flywheel -------------
+Final PID parameter
+  - P: ?
+  - I: ?
+  - D: ?
+  - Icap: ?
+  - FF: ?
+
+
+Stabilization times achieved: ?
+
+Maximum overshot recorded: ?
+
+------- Extra Challenge -------
+
+Part 3: Imbalanced
+
+Objectives
+  - Stabilize the Turret in 3 seconds with less than 1 overshoots. 
+  - Record your PID settings
+
+--------- Extra Challenge -------------
+Final PID parameter
+  - P: ?
+  - I: ?
+  - D: ?
+  - Icap: ?
+  - FF: ?
+
+
+Stabilization times achieved: ?
+
+Maximum overshot recorded: ?
