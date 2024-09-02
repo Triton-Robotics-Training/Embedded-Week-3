@@ -16,13 +16,13 @@ all are given incase you need them.
 Part 1: Position
  
 Objectives
-  - Stabilize the system in 5 seconds with overshoot of less than 5. 
+  - Stabilize the system in 5 seconds with overshoot of less than 3. 
   - Record your PID settings
 
 Part 2: Flywheels
 
 Objectives
-  - Stabilize the Flyweels in 3 seconds with overshoot of less than 4. 
+  - Stabilize the Flyweels in 2.5 seconds with overshoot of less than 5. 
   - Record your PID settings
 
 Submission Instructions:
@@ -58,7 +58,7 @@ Maximum overshot recorded: ?
 Part 3: Imbalanced
 
 Objectives
-  - Stabilize the Turret in 3 seconds with less than 1 overshoots. 
+  - Stabilize the Turret in 5 seconds with overshoot of less than 5. 
   - Record your PID settings
 
 --------- Extra Challenge -------------

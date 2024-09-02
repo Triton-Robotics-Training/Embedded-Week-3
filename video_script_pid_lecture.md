@@ -12,6 +12,8 @@ PID is an art, but more realistically, PID is an algorithm (TODO)
 
 As an engineer, the actual movements of any machine is rarely precisely the same as we desire. Thus, we need some ways to control the state of the machine so that it is as close as possible to how we want our machines to move. PID is an algorithm that allows us to adjust our actuation to our desired state given the machine's previous behaviors, allowing us to control systems where our method of actuation is not directly controlling the state of the machine that we want controlled.
 
+PID stands for Proportional, Integral, Derivative, and it names the three components that we use to control our system. We will go more into depth on this over the course of this video.
+
 An example that we'll be using for the rest of this video is a motor where we control its power (acceleration) and we want to control its position.
 
 > TERMINOLOGY CARD, ALL THE TERMS ↓
@@ -20,13 +22,13 @@ An example that we'll be using for the rest of this video is a motor where we co
 
 Before we delve into the specifics of PID, here are some terminologies:
 
-The desired state is where we want the system to be
+The desired state is where we want the system to be. It is also known as the setpoint.
 
-The actual state is where the system is, this is gotten through a sensor of some kind (PID is closed-loop system, and thus requires feedback to operate).
+The actual state is where the system is, this is gotten through a sensor of some kind. PID is a closed-loop system. A closed loop-system uses feedback of a measurement of some kind, while an open loop system, you control your actuation and then pray that its where you want it to be and ball.
 
-The error of the system is the desired minus actual. This is how far the actual state of the system is deviated from the desired.
+The error of the system is the desired minus actual. This is how far the actual state of the system is deviated from the desired. We will refer to this as $e(t)$
 
-The output is how we actuate on, or change the system. This is generally our only method of impacting the system, and is often not relatable to the inputs we get from the system, an example being that we want to control position of a motor but all we can actually set is its acceleration.
+The output is how we actuate on, or change the system. It's the value you send out of the PID and into the motor or other actuation device to act on the system. This is generally our only method of impacting the system, and is often not relatable to the inputs we get from the system, an example being that we want to control position of a motor but all we can actually set is its acceleration. We will refer to this as $u(t)$
 
 Remember that PID is an algorithm that helps us control the variable we care about with separate actuation, and is used in cases where the only way we can actuate the system doesn't give us way to control the system well.
 
@@ -35,7 +37,9 @@ In this lecture, I'll be using a lot of examples and showing a lot of models, al
 > BANG BANG ↓
 > ![](assets/video_panels/bangbang.png)
 
-Before we even go into PID, Lets consider first a simple scenario, we have a motor, a desired, and we know the actual. If we are above the actual, we give the motor full power downwards, and if we are below the actual, we give the motor full power upwards. This is what you'll get from that sort of control most if not all of the time, where delays in reaction and inertia in the system cause the jagged motion of the actual around the desired.
+Before we even go into PID, lets consider first a simple scenario, we have a motor, a desired (pictured in blue), and we know the actual (red). Our output is in green. We can give the motor either full power, nothing, or full reverse power.
+
+The simplest form of control is known as Bang Bang control. If we are above the actual, we give the motor full power downwards, and if we are below the actual, we give the motor full power upwards. This is what you'll get from that sort of control most if not all of the time, where delays in reaction and inertia in the system cause the jagged motion of the actual around the desired.
 
 This is a rudimentary form of control, and is mainly used when you have no fine control over actuation, and instead have a binary ON or OFF for your motor or other device.
 
@@ -43,9 +47,9 @@ This is a rudimentary form of control, and is mainly used when you have no fine 
 
 ![](assets/video_panels/card1.png)
 
-If we have variable control over our actuation, a better way we can make a system do what we want is with a proportional component. A proportional component will set an output directly proportional to the error, as such $u_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system.
+If we have variable control over our actuation, a better way we can make a system do what we want is with a proportional component. Proportional is the P in PID. A proportional component will set an output directly proportional to the error, as such $u_p(t) = k_p * e(t)$. In this case, $k_p$ is our multiplier for p, and it is one of the parameters we use to tune the system. $u_p$ is the proportional component of $u(t)$
 
-Let's take an example of a motor, with which we are trying to control its position. Let's say we have a motor at position -5, and we want to be at 150, with this, our error e(t) is desired - actual, which is 150 - (-5), giving us an error of 155. If we have a $k_p$ value of 2, then the value that is sent the motor is 310.
+Let's take an example of a motor, with which we are trying to control its position. Let's say we have a motor at position -5, and we want to be at position 150, with this, our error e(t) is desired - actual, which is 150 - (-5), giving us an error of 155. If we have a $k_p$ value of 2, then the value that is sent the motor is 310.
 
 These are all arbitrary units, and that makes sense because the scale of the PID depeends on the method of your measurment (what is -5 and what is 150, meters? cm? degrees?), and the method of actuation (What is 310, is that in amps, mA, percent, or some other unit). Remember that the scale of a PID will differ wildly on these factors.
 
@@ -59,21 +63,23 @@ One thing to note is that, it takes time for machines to interpret and execute t
 
 ![](assets/video_panels/pid1.png)
 
-Now, what if we apply 310 power to the motor, and it reached 150. According to the equation, our desired is 150, our actual is 150, and therefore our error is 0 and our output is 0. Fantastic. HOWEVER, what if the system attached to the motor has inertia, and that inertia carries the motor past 150 and all the way to 277, before the force of the motor becomes enough to pull the system to a halt and make it begin moving in the other direction. Now its moving higher, until again it reaches 0 and the output is again 0 and then it goes past AGAIN to 55, and back, and forth, until it slowly stabilizes at 150. Here, you can see EXACTLY that happening. This exact model you can see in the pid_lecture_1_basic example in the sim, which you can change using the "Process example" slider.
+Now, what if we apply 310 power to the motor, and it reached a position of 150. According to the equation, our desired is 150, our actual is 150, and therefore our error is 0 and our output is 0. Fantastic. HOWEVER, what if the system attached to the motor has inertia, and that inertia carries the motor past 150 and all the way to 277, before the force of the motor becomes enough to pull the system to a halt and make it begin moving in the other direction. Now its moving higher, until again it reaches 0 and the output is again 0 and then it goes past AGAIN to 55, and back, and forth, until it slowly stabilizes at 150. Here, you can see EXACTLY that happening. This exact model you can see in the pid_lecture_1_basic example in the ![sim](https://pknessness.github.io/pid_sim/pid.html), which you can change using the "Process example" slider.
 
 > SHOW EQUATION ↓
 
 ![](assets/video_panels/card2.png)
 
-This phenomenon is known as overshoot, and it happens with virtually any amount of unchecked inertia in your system. There is a way to combat this, and this comes in the form of the D component, or the derivative component. The derivative component will set an output directly proportional to the error, as such $u_d(t) = k_d * \frac{de(t)}{dt}$. On its own, all it does is resist change of the actual, but with P and D, you can create systems that move the actual toward the desired and smooth out oscillations. If we go back to our scenario from earlier, lets say that we now have a $k_d$ of 2. Now, we should also quantify the derivative of the error. Lets say that the difference between the desired and actual is decreasing at a rate of -60. That is our de/dt, and therefore our d component becomes -120. This plus the 310 will reduce to 190 and this will slow the motor, and will continue to keep it at a slower rate as it reaches the desired position.
+This phenomenon is known as overshoot, and it happens with virtually any amount of unchecked inertia in your system. There is a way to combat this, and this comes in the form of the D component, or the derivative component. The derivative component will set an output directly proportional to the error, as such $u_d(t) = k_d * \frac{d}{dt}e(t)$. $\frac{d}{dt}e(t)$ is the derivative of error over time. On its own, all it does is resist change of the actual, but with P and D, you can create systems that move the actual toward the desired and smooth out oscillations. If we go back to our scenario from earlier, lets say that we now have a $k_d$ of 2. Now, we should also quantify the derivative of the error. Lets say that the difference between the desired and actual is decreasing at a rate of -60. That is our de/dt, and therefore our d component becomes -120. This plus the 310 will reduce to 190 and this will slow the motor, and will continue to keep it at a slower rate as it reaches the desired position.
 
 > SHOW IMAGE2_2,0,2 ↓
 
 ![](assets/video_panels/pid2.png)
 
-You can see this happening here. The only difference between this and the previous graph is that the previous graph had PID 2 0 0, (P is 2, I is 0, D is 0), and this new one has a PID of 2 0 2, (both P and D are 2, I is 0).
+You can see this happening here. The only difference between this and the previous graph is that the previous graph had PID 2 0 0, (P is 2, I is 0, D is 0), and this new one has a PID of 2 0 2, (both P and D are 2, I is 0). I recommend going to the sim and playing around with the pid_lecture_1_basic example until you can make it smooth. Move the setpoint around to see how it reacts.
 
-You can see how smooth the transition is, and how much better and more quickly the actual reaches the desired. Look at this, its FANTASTIC.
+You can see how smooth the transition is, and how much better and more quickly the actual reaches the desired. Look at this, its FANTASTIC. Keep in mind however, that raising the D too high can cause a very slow reaction, because the dampening is going too far, and beyond a certain point it will cause very high frequency oscillation. I recommend you try this in the sim, and move the setpoint around.
+
+In a more general sense, as you approach the setpoint quickly, your $u_d$ will become larger and continue opposing your motion, while your $u_p$ will shrink (because you are growing nearer to your setpoint), until you reach your setpoint. If you are moving quickly, the $u_d$ will oppose your motion more, and if you are near the setpoint, the $u_p$ will try less hard to get there. It is a combination of these two components that causes this smooth motion as a result.
 
 > IMAGE3 ↓
 
@@ -91,7 +97,13 @@ This example is the pid_lecture_2_friction example, which can be accessed in the
 
 ![](assets/video_panels/pid4.png)
 
-Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. This is because when the setpoint changed, the error began to accumulate as integral. The area under the curve before the actual and desired met is accumulated without limit as integral and then begins to impact the system beyond crossing the setpoint because the integral has "wound up" and needs to unwind before the integral component is 0. Sometimes you want this to be the case, but here it winds up too much. One way we can reduce this is by reducing the $k_i$ coefficient, but this will lead to an even more delayed reaction because the integral will simply wind up less quickly. 
+Consider now this graph that is the same physical characteristics, now with a 2 1 2 PID. See how this causes overshoot again. This is because when the setpoint changed, the error began to accumulate as integral.
+
+> IMAGE4.1 ↓
+
+![](assets/video_panels/pid4_1.png)
+
+The area under the curve before the actual and desired met is accumulated without limit as integral, pictured here in pink, and then begins to impact the system beyond crossing the setpoint because the integral has "wound up" and needs to unwind, the unwinding pictured here in orange, before the integral component is 0. Remember that the $u_i$ is equal to $k_i$ times the integral, the integral being the area under the curve. Sometimes you want this to be the case, but here it winds up too much. One way we can reduce this is by reducing the $k_i$ coefficient, but this will lead to an even more delayed reaction because the integral component will simply wind up less quickly.
 
 What we need is to limit the I component's winding up, and we can do that using the fourth parameter, the I cap. The I cap is the maximum of the I component of the entire equation, basically limiting how much the I component can build to, and overall how much of an impact it can have on the final output. In mathmatical terms, it is $u_i(t) = min(Icap,k_i * \int{e(t)dt})$.When using I cap, $k_i$ becomes a parameter of "how fast does the I build", basically becoming a persistent parameter that will decrease continuously (until it reached the I cap) when actual is above desired, and increase continuously (until it reached the I cap) when actual is below desired.
 
