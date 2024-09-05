@@ -109,7 +109,7 @@ One final scenario where we want to use I is when we want a lot of power at the 
 > GRAPH SHOWING ACTUAL OUTPUT VS DESIRED ZOOMED IN SHOWING CONNECTION ↓
 > ![](assets/video_panels/discreteTime.png)
 
-One thing to note is that, it takes time for machines to interpret and execute the instructions in reality. Unlike our previous graphs which looks like they are continuous, the actual values are obtained and calculated in discrete time stamps, which you can see here. In this graph, we read and calculate new values every 10 ms. This means that we will need to use estimation methods to calculate the derivatives and integrals of e(t) for the following I and D components. We use riemann sums to approximate integrals and we use the point-slope formula to calculate derivatives, and we talk more about the theory of this in the
+One thing to note is that, it takes time for machines to interpret and execute the instructions in reality. Unlike our previous graphs which looks like they are continuous, the actual values are obtained and calculated in discrete time stamps, which you can see here. In this graph, we read and calculate new values every 10 ms. This means that we will need to use estimation methods to calculate the derivatives and integrals of e(t) for the following I and D components. We use riemann sums to approximate integrals and we use the point-slope formula to calculate derivatives, and we talk more about the theory of this in the README
 
 > FULL EQUATION ↓
 > ![](assets/video_panels/card3.png)
