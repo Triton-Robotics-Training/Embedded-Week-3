@@ -10,7 +10,7 @@ $u(t) = K_p\cdot e(t) + K_i\cdot\int^t_0{e(\tau)d\tau}~+ K_d\cdot \frac{d}{dt}\l
 
 Effectively, we have a controller for a single action, so that aspect is tuned to use. We have individually tuned PIDs for the position and velocity of each motor, because each motor is in a unique position on the robot, with different load, friction, and other random qualities.
 
-Before you read the rest of this, you should watch this video: [Embedded Training - PID](https://youtu.be/yVpCXCNAQF0)
+Before you read the rest of this, you should watch this video: [Embedded Training - PID](https://youtu.be/yVpCXCNAQF0). The script for this video can be found in the [video_script_pid_lecture.md](video_script_pid_lecture.md)
 ![](assets/video_panels/TitleCard.png)
 
 ### Proportional
