@@ -50,10 +50,6 @@ $u(t) = K_d\cdot \frac{d}{dt}\left[e\left(t\right)\right] \to u(t) = 4.2(2.48) =
 
 The derivative has set our output to be 10.416. Derivative is meant to dampen a PID controller. If the error is moving toward zero, the derivative will add a component to make the error grow, and if the error is growing its component will make it move toward zero. It effectively dampens change.
 
-# Assignment #1
-
-For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](https://github.com/Triton-Robotics-Training/Embedded-Week-3/blob/main/week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
-
 ### Integral Calculation
 
 If you've taken calc, you probably know about Riemann (Ree-mon) sums. Riemann sums are how we calculate integrals in code. While data in the real world is fluid, code is not, code, however, can get pretty close if the time interval is small enough. What we get from this is a series of points that describe the curve.
@@ -70,18 +66,20 @@ The way we do derivatives is also the same way we do derivative in calc. A deriv
 
 Between each data point, you see the yellow slope line and the two blue component lines. for PID, we consider the dE at each point as the slope of the line leading to it. The dE at the green marked point would be the slope between the two marked points.
 
+# Assignment #1 - Writing the class
+
+For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](https://github.com/Triton-Robotics-Training/Embedded-Week-3/blob/main/week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
+
 # Additional Notes
 
 ### Tuning the PID Parameters (Kp, Ki, Kd)
 
-Tuning the PID coefficients can be a trial-and-error process. Finding the right balance between the three is crucial, as improper tuning can lead to instability, oscillations, or slow responses. (Common methods for tuning PID includes the Ziegler-Nochols method or manual tuning stategies
+Tuning the PID coefficients can be a trial-and-error process. Finding the right balance between the three is crucial, as improper tuning can lead to instability, oscillations, or slow responses. Common methods for tuning PID includes the Ziegler-Nochols method or manual tuning stategies
 
-### Considerations
+# Assignment #2 - Tuning
 
-In real-world implementaions, there might be different limiations such as non-linearity in the system which means the values that worked once might not work again. So constantly tuning it can give optimal performance. This is especially important when dealing with the different robots.
+For the second assignment this week we will be using a custom PID Simulator ([Sim](https://pknessness.github.io/pid_sim/pid.html)). There will a list of objectives in the week 3 assignment 2 [text file](week3_assignment2.txt). For which you have to tune to the instructions and input the answer within the file. 
 
-# Assignment
+Clicking the "Test Sequence" button will begin a test set and you will be able to see how your PIDs fare to a predetermined set of moves. It will tell you the worst stabilization time and the worst overshoot amount. Keep in mind that if your tunings don't stabilize, it will say so. If you have any questions about the simulator, please contact your lead.
 
-For the assignment this week we will be using a customize PID Simulator ([Sim](https://pknessness.github.io/pid_sim/pid.html)). There will a list of objectives in the week 3 assignment 2 [text file](week3_assignment2.txt). For which you have to tune to the instructions and input the answer within the file.
-
-Clicking the "Test Sequence" button will begin a test set and you will be able to see how your PIDs fare to a predetermined set of moves. It will tell you the worst stabilization time and the worst overshoot amount. Keep in mind that if your tunings don't stabilize, it will say so and not continue recording the rest of the setpoints. If you have any questions about the simulator, please contact your lead.
+If you're having trouble with tuning, you can refer back to the video at the start, the [PID Lecture](https://youtu.be/yVpCXCNAQF0)

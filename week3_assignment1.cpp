@@ -1,7 +1,13 @@
+//STARTER 
+//THIS EXERCISE IS TO BE DONE IN A GENERIC C++ COMPILER
+//https://www.programiz.com/cpp-programming/online-compiler/
+//IF YOU HAVE ISSUES WITH THE COMPILER, CONTACT EMBEDDED LEAD
+
 ///////////////
 //PID.h
 ///////////////
-#include "mbed.h"
+#include <cstdio>
+#include <cstdint>
 
 int t = 1; //fake time reading (real time doesn't work on this sim)
 
@@ -12,16 +18,16 @@ long us_ticker_read_test(){
 class PIDClass{
 public:
     
-    PIDClass(double kP, double ki, double kD);
+    PIDClass(double kP, double kI, double kD);
     double calculate(double error);
     
 private:
     
     double kP, kI, kD; //constants 
-    
+
     long lastTime; //timestamp of the previous time
-    double lastError; //error of previous loop
-    double sumError; //integral of all the error
+    double lastError; //error of previous frame
+    double errorIntegral; //integral of error
     
     double calculateP(double error); 
     double calculateI(double error);
@@ -32,14 +38,11 @@ private:
 ///////////////
 
 //include PID.h //not neccessary here as we are using one file for everything.
+
 PIDClass::PIDClass(double kP, double kI, double kD){
     lastTime = 0; //No calculations yet, so lastTime is 0;
     
     //TODO: initialize the rest of the private variables here
-    this->kP = kP;
-    this->kI = kI;
-    this->kD = kD;
-    sumError = 0;
 }
 
 /*
@@ -48,8 +51,7 @@ PIDClass::PIDClass(double kP, double kI, double kD){
  * @return the output from this calculation
  */
 double PIDClass::calculateP(double error){
-    //printf("p [%f %f]\n",error, kP);
-    return error * kP;
+    return /*return P calculation*/;
 }
 
 /*
@@ -59,11 +61,9 @@ double PIDClass::calculateP(double error){
  */
 double PIDClass::calculateI(double error){
     long currentTime = us_ticker_read_test();
-    //printf("--cT %d lT %d--",currentTime, lastTime);
     
-    sumError += error * (currentTime - lastTime);
-    //printf("i [%f %f]\n",sumError, kI);
-    return sumError * kI;
+    errorIntegral = /*update errorIntegral*/;
+    return /*return I calculation*/;
 }
 
 /*
@@ -73,11 +73,9 @@ double PIDClass::calculateI(double error){
  */
 double PIDClass::calculateD(double error){
     long currentTime = us_ticker_read_test();
-    //printf("--cT %d lT %d--",currentTime, lastTime);
     
-    double dE = (error - lastError) / (currentTime - lastTime);
-    //printf("d [%f %f]\n",dE, kD);
-    return dE * kD;
+    double dEdt = /*calculate derivative of Error*/;
+    return /*return D calculation*/;
 }
 
 /*
@@ -88,9 +86,9 @@ double PIDClass::calculateD(double error){
 double PIDClass::calculate(double error){
     double result = calculateP(error) + calculateI(error) + calculateD(error);
     
-    lastTime = us_ticker_read_test();
-    lastError = error;
-    
+    lastTime = /*set lastTime*/;
+    lastError = /*set lastError*/;
+
     return result;
 }
 
@@ -100,7 +98,7 @@ double PIDClass::calculate(double error){
 
 //#include "PID.cpp" //not neccessary here again as we are using one file for everything.
 
-bool dbug = true;
+bool debugCode = true;
 
 int main(){
     PIDClass testP(3.2,0,0);
@@ -112,7 +110,7 @@ int main(){
     double errors[25] = {1.34,1.144,0.838,0.425,-0.037,-0.454,-0.751,-0.917,-0.985,-1,-0.993,-0.961,-0.919,-0.838,-0.713,-0.562,-0.408,-0.269,-0.15,-0.052,0.029,0.095,0.151,0.198};
     
     for(int i = 0; i < 25; i ++){
-        if(dbug){
+        if(debugCode){
             printf("Results at time %d: P: %f, I: %f D: %f All: %f\n", t,
                 testP.calculate(errors[i]),
                 testI.calculate(errors[i]),
