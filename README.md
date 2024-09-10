@@ -10,6 +10,9 @@ $u(t) = K_p\cdot e(t) + K_i\cdot\int^t_0{e(\tau)d\tau}~+ K_d\cdot \frac{d}{dt}\l
 
 Effectively, we have a controller for a single action, so that aspect is tuned to use. We have individually tuned PIDs for the position and velocity of each motor, because each motor is in a unique position on the robot, with different load, friction, and other random qualities.
 
+Before you read the rest of this, you should watch this video: [Embedded Training - PID](https://youtu.be/yVpCXCNAQF0)
+![](assets/video_panels/TitleCard.png)
+
 ### Proportional
 
 The first section of the PID Formula is proportional, P. The output here is simply directly proportional to the error.
@@ -47,9 +50,9 @@ $u(t) = K_d\cdot \frac{d}{dt}\left[e\left(t\right)\right] \to u(t) = 4.2(2.48) =
 
 The derivative has set our output to be 10.416. Derivative is meant to dampen a PID controller. If the error is moving toward zero, the derivative will add a component to make the error grow, and if the error is growing its component will make it move toward zero. It effectively dampens change.
 
-# Exercise #1
+# Assignment #1
 
-For this exercise, we'll be writing a PID class. There is some [starter code](https://github.com/Triton-Robotics-Training/Week-3/blob/main/pidalgorithm.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
+For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](https://github.com/Triton-Robotics-Training/Embedded-Week-3/blob/main/week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
 
 ### Integral Calculation
 
