@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <cstdint>
 
-int t = 1; //fake time reading (real time doesn't work on this sim)
+int t = 10; //fake time reading (real time doesn't work on this sim)
 
 long us_ticker_read_test(){
     return t;
@@ -102,10 +102,10 @@ bool debugCode = true;
 
 int main(){
     PIDClass testP(3.2,0,0);
-    PIDClass testI(0,2.1,0);
-    PIDClass testD(0,0,4.2);
+    PIDClass testI(0,0.21,0);
+    PIDClass testD(0,0,42.0);
     
-    PIDClass testAll(3.2,2.1,4.2);
+    PIDClass testAll(3.2,0.21,42.0);
     
     double errors[25] = {1.34,1.144,0.838,0.425,-0.037,-0.454,-0.751,-0.917,-0.985,-1,-0.993,-0.961,-0.919,-0.838,-0.713,-0.562,-0.408,-0.269,-0.15,-0.052,0.029,0.095,0.151,0.198};
     
@@ -118,6 +118,6 @@ int main(){
                 testAll.calculate(errors[i])
                 );
         }
-        t++;
+        t+=10;
     }
 }
