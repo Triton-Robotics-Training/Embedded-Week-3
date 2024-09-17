@@ -56,11 +56,11 @@ If you've taken calc, you probably know about Riemann (Ree-mon) sums. Riemann su
 
 ![](assets/week3_3.png)
 
-Imagine this is a graph of error. What we are showing here is a Right-Hand Riemann sum. This is how we recommend you implement integral calculations (as its pretty simple), but you can do it in other ways. You can experiment with this data set here: [Rieman Sum Simulator](https://www.desmos.com/calculator/kye17rgo1b)
+Imagine this is a graph of error. What we are showing here is a Right-Hand Riemann sum. Basically, we're summing up every rectangle, each rectangle being the difference in time from the previous point * the error. $I(t) = \Sigma_{t=0}^T e(t) * dt$, where $T$ is the current time. This is how we recommend you implement integral calculations (as its pretty simple to just do a running sum), but you can do it in other ways. You can experiment with this data set here: [Rieman Sum Simulator](https://www.desmos.com/calculator/kye17rgo1b)
 
 ### Derivative Calculations
 
-The way we do derivatives is also the same way we do derivative in calc. A derivative is the slope between two points, where the dt is a limit to infinity. In our case, with code, the dt is simply as fast as we get data, which gets us pretty close. If you'd like to experiment with how the dt changes the results, I have another desmos sim here: [Derivatives Approximation](https://www.desmos.com/calculator/yhwf0jrps8). It uses the same data as the integral sim.
+The way we do derivatives is also the same way we do derivative in calc. A derivative is the slope between two points, where the dt is a limit to infinity, $D(t) = de(t)/dt$. In our case, with code, the dt is simply as fast as we get data, which gets us pretty close. If you'd like to experiment with how the dt changes the results, I have another desmos sim here: [Derivatives Approximation](https://www.desmos.com/calculator/yhwf0jrps8). It uses the same data as the integral sim.
 
 ![](assets/week3_4.png)
 
