@@ -13,6 +13,33 @@ tunings of.
 You don't need to use all the parameters given to tune the targets, but 
 all are given incase you need them.
 
+Tuning PID:
+
+Before pressing the "Test Sequence" button, you can tune your PID values 
+for each part by changing the Setpoint slider to a different point and 
+seeing how the actual position tries to keep up.
+
+You want to start by tuning Kp (proportional gain) till the actual output 
+is oscillating around the desired output but not overshooting heavily.
+
+Then, you can tune the Kd (derivative gain) such that the actual output 
+settles reasonably quickly around the desired point.
+
+Finally, you can tune the Ki (integral gain) to remove any steady state 
+error/offset that your actual position has from the desired position. 
+Remember to keep your Ki low, and set a reasonable Icap as well!
+
+(For part 3)
+
+After this, if your system is still not settling accurately, you can 
+add code to the feedforward equation. The feedforward will remove any 
+predictable errors (such as the ones caused by friction) onto the 
+system by directly adding a term from the state variable to the output.
+
+It would then be of the form:
+
+return -45 * Math.cos(actual * Math.PI / 180);
+
 Part 1: Position
  
 Objectives
