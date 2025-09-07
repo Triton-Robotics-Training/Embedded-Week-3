@@ -56,15 +56,15 @@ If you've taken calc, you probably know about Riemann (Ree-mon) sums. Riemann su
 
 ![](assets/week3_3.png)
 
-Imagine this is a graph of error. What we are showing here is a Right-Hand Riemann sum. Basically, we're summing up every rectangle, each rectangle being the difference in time from the previous point * the error. $I(t) = \Sigma_{t=0}^T e(t) * dt$, where $T$ is the current time. This is how we recommend you implement integral calculations (as its pretty simple to just do a running sum), but you can do it in other ways. You can experiment with this data set here: [Rieman Sum Simulator](https://www.desmos.com/calculator/kye17rgo1b)
+Imagine this is a graph of error. What we are showing here is a Right-Hand Riemann sum. Basically, we're summing up every rectangle, each rectangle being the difference in time from the previous point * the error. $I(t) = \Sigma_{t=0}^T e(t) * dt$, where $T$ is the current time. This is how we recommend you implement integral calculations (as it's pretty simple to just do a running sum), but you can do it in other ways. You can experiment with this data set here: [Rieman Sum Simulator](https://www.desmos.com/calculator/kye17rgo1b)
 
 ### Derivative Calculations
 
-The way we do derivatives is also the same way we do derivative in calc. A derivative is the slope between two points, where the dt is a limit to infinity, $D(t) = de(t)/dt$. In our case, with code, the dt is simply as fast as we get data, which gets us pretty close. If you'd like to experiment with how the dt changes the results, I have another desmos sim here: [Derivatives Approximation](https://www.desmos.com/calculator/yhwf0jrps8). It uses the same data as the integral sim.
+The way we do derivatives is also the same way we do derivatives in calculus. A derivative is the slope between two points, where the dt is a limit to infinity, $D(t) = de(t)/dt$. In our case, with code, the dt is simply as fast as we get data, which gets us pretty close. If you'd like to experiment with how the dt changes the results, I have another Desmos sim here: [Derivatives Approximation](https://www.desmos.com/calculator/yhwf0jrps8). It uses the same data as the integral sim.
 
 ![](assets/week3_4.png)
 
-Between each data point, you see the yellow slope line and the two blue component lines. for PID, we consider the dE at each point as the slope of the line leading to it. The dE at the green marked point would be the slope between the two marked points.
+Between each data point, you see the yellow slope line and the two blue component lines. For PID, we consider the dE at each point as the slope of the line leading to it. The dE at the green marked point would be the slope between the two marked points.
 
 ### Feedforward Calculation
 
@@ -73,13 +73,13 @@ The feedforward equation is often the most important equation in ensuring the st
 
 # Assignment #1 - Writing the class
 
-For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. Your goal is to complete the class and make it functional as a PID class. You can add variables, methods, anything you want to the PID class. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
+For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class section, but not the main section, as that's the autograder. Of course, you can add prints in the main as you'd like, and modify the debug flag in main. Your goal is to complete the class and make it functional as a PID class. You can add variables, methods, anything you want to the PID class. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
 
 # Additional Notes
 
 ### Tuning the PID Parameters (Kp, Ki, Kd)
 
-Tuning the PID coefficients can be a trial-and-error process. Finding the right balance between the three is crucial, as improper tuning can lead to instability, oscillations, or slow responses. Common methods for tuning PID includes the Ziegler-Nochols method or manual tuning stategies
+Tuning the PID coefficients can be a trial-and-error process. Finding the right balance between the three is crucial, as improper tuning can lead to instability, oscillations, or slow responses. Common methods for tuning PID includes the Ziegler-Nichols method or manual tuning strategies
 
 # Assignment #2 - Tuning
 
