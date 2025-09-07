@@ -66,6 +66,11 @@ The way we do derivatives is also the same way we do derivative in calc. A deriv
 
 Between each data point, you see the yellow slope line and the two blue component lines. for PID, we consider the dE at each point as the slope of the line leading to it. The dE at the green marked point would be the slope between the two marked points.
 
+### Feedforward Calculation
+
+The feedforward equation is often the most important equation in ensuring the stability of the system. It deals with predictable errors such as friction or gravity. The feedforward equation takes in the current state of the system (not the error), and then modifies it appropriately to the imbalance of the system. If you want to see the feedforward equation in action, my [PID sim](https://pknessness.github.io/pid_sim/pid.html) has a basic friction feedforward term in example3, which uses the current input to account for the amount of friction.
+
+
 # Assignment #1 - Writing the class
 
 For this exercise, we'll be writing a PID class. There is some starter code, which you can find in [week3_assignment1.cpp](week3_assignment1.cpp), but you'll be implementing the things you've learned above yourself. You have full freedom to change anything in the PID class sectionc, but not the main section, as thats the autograder. Of course you can add prints in the main as you'd like, and modify the debug flag in main. Your goal is to complete the class and make it functional as a PID class. You can add variables, methods, anything you want to the PID class. We have a set of [known correct outputs](pidCorrectOutputs.md), which is helpful for debugging, but know that differences from these do not necessarily mean that you are incorrect.
